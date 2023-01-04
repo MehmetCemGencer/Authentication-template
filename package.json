@@ -8,7 +8,7 @@
 		"start": "node index.js",
 		"dev": "nodemon -L index.js",
 		"test": "nodemon -L --exec NODE_OPTIONS=--experimental-vm-modules jest --watchAll -i",
-		"test:github": "NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --detectOpenHandles --forceExit"
+		"test:github": "NODE_ENV=ghtest NODE_OPTIONS=--experimental-vm-modules jest --detectOpenHandles --forceExit"
 	},
 	"dependencies": {
 		"bcryptjs": "^2.4.3",

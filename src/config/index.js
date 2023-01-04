@@ -7,7 +7,7 @@ export const SESSION_SECRET =
 export const DB_URL =
 	process.env.NODE_ENV == "production"
 		? readFileSync("../run/secrets/db_url", "utf-8")
-		: process.env.NODE_ENV == "test"
+		: process.env.NODE_ENV == "ghtest"
 		? "localhost"
 		: "auth-db"
 export const DB_PORT =
@@ -29,7 +29,7 @@ export const DB_NAME =
 export const REDIS_URL =
 	process.env.NODE_ENV == "production"
 		? readFileSync("../run/secrets/redis_url", "utf-8")
-		: process.env.NODE_ENV == "test"
+		: process.env.NODE_ENV == "ghtest"
 		? "localhost"
 		: "redis"
 export const REDIS_PORT =

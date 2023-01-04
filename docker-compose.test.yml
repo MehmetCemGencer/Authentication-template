@@ -4,7 +4,7 @@ services:
         build:
             context: .
             args:
-                NODE_ENV: dev
+                NODE_ENV: test
         container_name: auth-service
         ports:
             - 8000:8000
@@ -14,7 +14,7 @@ services:
         volumes:
             - .:/app
             - /home/cem/Documents/auth-service/node_modules
-        command: npm run dev
+        command: npm run test
     auth-db:
         container_name: auth-db
         image: postgres:12-alpine
