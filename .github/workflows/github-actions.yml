@@ -1,0 +1,26 @@
+name: authentication-service-test
+run-name: Test
+on: [push]
+jobs:
+    auth-service-test:
+        timeout-minutes: 5
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+
+            - uses: actions/setup-node@v3
+              with:
+                  node-version: 18.x
+
+            - name: Install deps
+              run: npm ci
+
+            - name: Start containers
+              run: docker compose -f "docker-compose.ci.yml" up -d
+
+            - name: Test
+              run: npm run test:github
+
+            - name: Stop containers
+              if: always()
+              run: docker-compose down -d -v

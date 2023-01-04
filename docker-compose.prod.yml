@@ -1,0 +1,49 @@
+version: "3.8"
+services:
+    auth-service:
+        build:
+            context: .
+            args:
+                NODE_ENV: production
+        container_name: auth-service
+        ports:
+            - 8000:8000
+        depends_on:
+            testdb:
+                condition: service_healthy
+        command: npm run test
+    testdb:
+        container_name: testdb
+        image: postgres:12-alpine
+        restart: always
+        environment:
+            POSTGRES_USER_FILE: /run/secrets/username
+            POSTGRES_PASSWORD_FILE: /run/secrets/password
+            POSTGRES_DB_FILE: /run/secrets/name
+        ports:
+            - 5432
+        healthcheck:
+            test: pg_isready --username=$(cat /run/secrets/username)
+            interval: 10s
+            timeout: 5s
+            retries: 5
+        secrets:
+            - username
+            - password
+            - name
+    redis:
+        image: "redis:alpine"
+        ports:
+            - 6379
+        healthcheck:
+            test: redis-cli ping | grep PONG
+            interval: 10s
+            timeout: 5s
+            retries: 5
+secrets:
+    username:
+        file: ./username.txt
+    password:
+        file: ./password.txt
+    name:
+        file: ./name.txt

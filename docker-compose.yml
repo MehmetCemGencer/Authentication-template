@@ -1,0 +1,41 @@
+version: "3.8"
+services:
+    auth-service:
+        build:
+            context: .
+            args:
+                NODE_ENV: dev
+        container_name: auth-service
+        ports:
+            - 8000:8000
+        depends_on:
+            auth-db:
+                condition: service_healthy
+        volumes:
+            - .:/app
+            - /home/cem/Documents/auth-service/node_modules
+        command: npm run test
+    auth-db:
+        container_name: auth-db
+        image: postgres:12-alpine
+        restart: always
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_DB: auth
+        ports:
+            - 5432
+        healthcheck:
+            test: pg_isready --username=postgres
+            interval: 10s
+            timeout: 5s
+            retries: 5
+    redis:
+        image: "redis:alpine"
+        ports:
+            - 6379
+        healthcheck:
+            test: redis-cli ping | grep PONG
+            interval: 10s
+            timeout: 5s
+            retries: 5
